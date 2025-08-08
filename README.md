@@ -4,6 +4,8 @@ Repositório destinado ao armazenamento e organização das atividades desenvolv
 ## 📚 Conteúdo
 Exercícios práticos em C
 
+Foco em algoritmos de ordenação e busca
+
 Manipulação de arquivos e ponteiros
 
 Estruturas de dados básicas
