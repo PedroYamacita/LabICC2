@@ -8,6 +8,7 @@ bool Palindromo(char *linha);
 int main(){
     char linha[TAM];
 
+    //Enquanto existir linhas para serem lidas vai executar o codigo abaixo
     while(fgets(linha, TAM, stdin) != NULL){
         if(Palindromo(linha)){
             printf("Sim\n");
@@ -20,6 +21,7 @@ int main(){
     return 0;
 }
 
+//Funcao que verifica se eh ou nao palindromo
 bool Palindromo(char *linha){
     char linhaLimpa[TAM];
     int tamanhoLinhaLimpa = 0;
@@ -42,8 +44,10 @@ bool Palindromo(char *linha){
         tamanhoLinhaLimpa++;
     }
 
+    //Adiciona o \0 no final da string
     linhaLimpa[tamanhoLinhaLimpa] = '\0';
 
+    //Verifica se a string eh um palindromo
     for(int i = 0; i < strlen(linhaLimpa)/2; i++){
         if(linhaLimpa[i] != linhaLimpa[tamanhoLinhaLimpa - 1 - i]){
             return false;
