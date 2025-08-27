@@ -23,7 +23,7 @@ int main(){
 
 //Funcao que verifica se eh ou nao palindromo
 bool Palindromo(char *linha){
-    char linhaLimpa[TAM];
+    char *linhaLimpa;
     int tamanhoLinhaLimpa = 0;
 
     //Processa a linha bruta em uma linha limpa para melhor analise de palindromo
