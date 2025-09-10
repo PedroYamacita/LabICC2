@@ -27,13 +27,17 @@ int Potenciacao(int n, int k){
     if(k == 1){
         return n;
     }
+    else if(k == 0){
+        return 1;
+    }
+    int potencia = Potenciacao(n, k / 2);
 
     //Usa o mod de 1000 para retornar somente os 3 ultimos digitos
-    else if(k % 2 == 0){
-        return ((Potenciacao(n, k / 2) * Potenciacao(n, k/ 2)) % 1000);
+    if(k % 2 == 0){
+        return ((potencia * potencia) % 1000);
     }
 
     else if(k % 2 == 1){
-        return ((Potenciacao(n, k / 2) * Potenciacao(n, k/ 2) * n) % 1000);
+        return ((potencia * potencia * n) % 1000);
     }
 }
