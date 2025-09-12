@@ -20,25 +20,25 @@ int main()
 
         // separa a pimeira parte antes do '-' como nome
         nome = strtok(linha, "-");
-        // verificar se deu certa a tokenizaçao
+        // verificar se deu certa a tokenizacao
         if (!nome)
             continue;
 
-        // tirar possiveis espaços à esquerda
+        // tirar possiveis espacos à esquerda
         while (*nome == ' ')
             nome++;
 
-        // substituir espaços no meio do nome por '-'
+        // substituir espacos no meio do nome por '-'
         nome[strcspn(nome, " ")] = '-';
 
-        // como o espaço no meio foi ocupado por '-' podemos adicionar \0 ao final caso o nome seja composto
+        // como o espaco no meio foi ocupado por '-' podemos adicionar \0 ao final caso o nome seja composto
         nome[strcspn(nome, " ")] = '\0';
 
         // separa publico
         publico = strtok(NULL, "\0");
         if (!publico)
             continue;
-        // tirar possiveis espaços à esquerda
+        // tirar possiveis espacos à esquerda
         while (*publico == ' ')
             publico++;
 
@@ -94,7 +94,7 @@ int tamanho_nome(char *nome)
     int tamanho = 0;
     for (int i = 0; nome[i] != '\0'; i++)
     {
-        // pular espaçoes e '-' que adicionamos no caso do nome ser composto
+        // pular espacos e '-' que adicionamos no caso do nome ser composto
         if (nome[i] != ' ' && nome[i] != '-')
             tamanho++;
     }
