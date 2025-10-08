@@ -28,7 +28,7 @@ void ListaFree(LISTA **item);
 // Algoritmos de ordenação
 void BubbleSort(LISTA *lista);
 void QuickSort(LISTA *lista, int inicio, int fim);
-void MergeSort(LISTA *lista, int inicio, int fim);
+void MergeSort(LISTA *lista, int inicio, int fim, BRINQUEDO **auxiliar);
 void InsertionSort(LISTA *lista);
 
 // Função auxiliar
@@ -59,13 +59,15 @@ int main()
         BubbleSort(lista);
         break;
     case 2:
-        QuickSort(lista, 0, lista->tamanho);
+        InsertionSort(lista);
         break;
     case 3:
-        MergeSort(lista, 0, lista->tamanho);
+        BRINQUEDO **auxiliar = (BRINQUEDO **)calloc(lista->tamanho, sizeof(BRINQUEDO *));
+        MergeSort(lista, 0, lista->tamanho, auxiliar);
+        free(auxiliar);
         break;
     case 4:
-        InsertionSort(lista);
+        QuickSort(lista, 0, lista->tamanho);
         break;
     }
 
@@ -130,82 +132,59 @@ void QuickSort(LISTA *lista, int inicio, int fim)
 }
 
 // Funcao auxiliar para o MergeSort
-void Merge(LISTA *lista, int inicio, int meio, int fim)
+void Merge(LISTA *lista, int inicio, int meio, int fim, BRINQUEDO **auxiliar)
 {
-    int quantElem1 = meio - inicio + 1;
-    int quantElem2 = fim - meio;
-
-    // Cria lista temporarias
-    LISTA *listaTemp1 = ListaCriar(quantElem1);
-    LISTA *listaTemp2 = ListaCriar(quantElem2);
-
-    for (int i = 0; i < listaTemp1->tamanho; i++)
-    {
-        listaTemp1->elementos[i] = lista->elementos[inicio + i];
-    }
-    for (int i = 0; i < listaTemp2->tamanho; i++)
-    {
-        listaTemp2->elementos[i] = lista->elementos[meio + 1 + i];
+    // Copia a lista original na lista auxiliar
+    for(int i = inicio; i <= fim; i++){
+        auxiliar[i] = lista->elementos[i];
     }
 
-    printf("Entrou no Conquistar\n");
+    int posLista1 = inicio;
+    int posLista2 = meio + 1;
+    int posListaOriginal = inicio;
 
     // Junta as duas listas ordenadamente comparando os primeiros elementos de cada
-    int i = 0, j = 0;
-    while (i < quantElem1 && j < quantElem2)
+    while (posLista1 <= meio && posLista2 <= fim)
     {
-        if (PodeTrocar(listaTemp1->elementos[i], listaTemp2->elementos[j]))
+        if (!PodeTrocar(auxiliar[posLista1], auxiliar[posLista2]))
         {
-            lista->elementos[inicio] = listaTemp2->elementos[j];
-            j++;
+            lista->elementos[posListaOriginal] = auxiliar[posLista1];
+            posLista1++;
         }
         else
         {
-            lista->elementos[inicio] = listaTemp1->elementos[i];
-            i++;
+            lista->elementos[posListaOriginal] = auxiliar[posLista2];
+            posLista2++;
         }
-        inicio++;
+        posListaOriginal++;
     }
 
     // Se sobrou elementos, adiciona na lista principal
-    if (i < quantElem1)
-    {
-        for (int k = i; k < quantElem1; k++)
-        {
-            lista->elementos[inicio] = listaTemp1->elementos[k];
-            inicio++;
-        }
+    while(posLista1 <= meio){
+        lista->elementos[posListaOriginal] = auxiliar[posLista1];
+        posListaOriginal++;
+        posLista1++;
     }
-    else if (j < quantElem2)
-    {
-        for (int k = j; k < quantElem2; k++)
-        {
-            lista->elementos[inicio] = listaTemp2->elementos[k];
-            inicio++;
-        }
+     while(posLista2 <= fim){
+        lista->elementos[posListaOriginal] = auxiliar[posLista2];
+        posListaOriginal++;
+        posLista2++;
     }
-
-    printf("Entrou no fim do Merge\n");
-    // Libera as listas temporarias
-    ListaFree(&listaTemp1);
-    ListaFree(&listaTemp2);
 }
 
-void MergeSort(LISTA *lista, int inicio, int fim)
+void MergeSort(LISTA *lista, int inicio, int fim, BRINQUEDO **auxiliar)
 {
     // Condicao de parada da recursao
     if (inicio < fim)
     {
-        int meio = (inicio + fim) / 2;
-        printf("Entrou no MergeSort\nInicio: %d, Meio: %d, Fim: %d\n", inicio, meio, fim);
+        int meio = (int)(inicio + fim) / 2;
         // Dividir
-        MergeSort(lista, inicio, meio);
-        MergeSort(lista, meio + 1, fim);
+        MergeSort(lista, inicio, meio, auxiliar);
+        MergeSort(lista, meio + 1, fim, auxiliar);
 
         // Conquistar
-        Merge(lista, inicio, meio, fim);
+        Merge(lista, inicio, meio, fim, auxiliar);
     }
-    printf("Terminou o Merge Sort\n");
 }
 
 void InsertionSort(LISTA *lista)
