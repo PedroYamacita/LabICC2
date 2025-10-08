@@ -228,9 +228,14 @@ bool PodeTrocar(BRINQUEDO *item1, BRINQUEDO *item2)
         // Verifica a nota
         if (item1->nota < item2->nota)
             return true;
+        else if (item1->nota > item2->nota)
+            return false;
 
-        // Se for igual ou estiver na ordem
-        return false;
+        // Verifica o id do item
+        if (item1->id > item2->id)
+            return true;
+            
+        return false;    
     }
     return false;
 }
