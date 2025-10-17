@@ -4,7 +4,7 @@
 #include <string.h>
 
 void QuickSort(int *vetor, int inicio, int fim);
-// void MergeSort(int *vetor);
+void MergeSort(int *vetor, int inicio, int fim, int *auxiliar);
 // void HeapSort(int *vetor);
 
 int main()
@@ -52,7 +52,9 @@ int main()
         QuickSort(vetor, 0, tamanho);
         break;
     case 2:
-        // MergeSort(vetor);
+        int *auxiliar = (int *)calloc(tamanho, sizeof(int));
+        MergeSort(vetor, 0, tamanho, auxiliar);
+        free(auxiliar);
         break;
     case 3:
         // HeapSort(vetor);
@@ -95,13 +97,13 @@ void QuickSort(int *vetor, int inicio, int fim)
         QuickSort(vetor, i, fim);
 }
 
-/*
 // Funcao auxiliar para o MergeSort
-void Merge(LISTA *lista, int inicio, int meio, int fim, BRINQUEDO **auxiliar)
+void Merge(int *vetor, int inicio, int meio, int fim, int *auxiliar)
 {
     // Copia a lista original na lista auxiliar
-    for(int i = inicio; i <= fim; i++){
-        auxiliar[i] = lista->elementos[i];
+    for (int i = inicio; i <= fim; i++)
+    {
+        auxiliar[i] = vetor[i];
     }
 
     int posLista1 = inicio;
@@ -111,44 +113,45 @@ void Merge(LISTA *lista, int inicio, int meio, int fim, BRINQUEDO **auxiliar)
     // Junta as duas listas ordenadamente comparando os primeiros elementos de cada
     while (posLista1 <= meio && posLista2 <= fim)
     {
-        if (!PodeTrocar(auxiliar[posLista1], auxiliar[posLista2]))
+        if (auxiliar[posLista1] > auxiliar[posLista2])
         {
-            lista->elementos[posListaOriginal] = auxiliar[posLista1];
+            vetor[posListaOriginal] = auxiliar[posLista1];
             posLista1++;
         }
         else
         {
-            lista->elementos[posListaOriginal] = auxiliar[posLista2];
+            vetor[posListaOriginal] = auxiliar[posLista2];
             posLista2++;
         }
         posListaOriginal++;
     }
 
     // Se sobrou elementos, adiciona na lista principal
-    while(posLista1 <= meio){
-        lista->elementos[posListaOriginal] = auxiliar[posLista1];
+    while (posLista1 <= meio)
+    {
+        vetor[posListaOriginal] = auxiliar[posLista1];
         posListaOriginal++;
         posLista1++;
     }
-     while(posLista2 <= fim){
-        lista->elementos[posListaOriginal] = auxiliar[posLista2];
+    while (posLista2 <= fim)
+    {
+        vetor[posListaOriginal] = auxiliar[posLista2];
         posListaOriginal++;
         posLista2++;
     }
 }
 
-void MergeSort(LISTA *lista, int inicio, int fim, BRINQUEDO **auxiliar)
+void MergeSort(int *vetor, int inicio, int fim, int *auxiliar)
 {
     // Condicao de parada da recursao
     if (inicio < fim)
     {
         int meio = (int)(inicio + fim) / 2;
         // Dividir
-        MergeSort(lista, inicio, meio, auxiliar);
-        MergeSort(lista, meio + 1, fim, auxiliar);
+        MergeSort(vetor, inicio, meio, auxiliar);
+        MergeSort(vetor, meio + 1, fim, auxiliar);
 
         // Conquistar
-        Merge(lista, inicio, meio, fim, auxiliar);
+        Merge(vetor, inicio, meio, fim, auxiliar);
     }
 }
-*/
